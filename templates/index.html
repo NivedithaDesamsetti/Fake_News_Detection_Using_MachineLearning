@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Fake News Detection Using ML</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+
+<h1>🔥 Fake News Detection Using Machine Learning</h1>
+
+<!-- Admin Panel Link (ADDED HERE ✅) -->
+<br>
+<a href="/admin" style="color:yellow; font-weight:bold; font-size:18px;">
+🔑 Admin Panel
+</a>
+<br><br>
+
+<select id="type" onchange="toggleInput()">
+<option value="">Select Type</option>
+<option value="text">Text</option>
+<option value="image">Image</option>
+<option value="audio">Audio</option>
+</select>
+
+<br><br>
+
+<textarea id="textInput" style="display:none;" placeholder="Enter Text"></textarea>
+
+<input type="file" id="imageInput" style="display:none;" accept="image/*">
+<input type="file" id="audioInput" style="display:none;" accept="audio/*">
+
+<br><br>
+
+<button onclick="detect()">🚀 Detect</button>
+
+<h2 id="result"></h2>
+
+<div class="progress-container">
+<div id="progress"></div>
+</div>
+
+<br>
+<a href="/dashboard">📊 View Fake vs Real Chart</a>
+
+</div>
+
+<script>
+
+function toggleInput(){
+
+let type = document.getElementById("type").value;
+
+document.getElementById("textInput").style.display="none";
+document.getElementById("imageInput").style.display="none";
+document.getElementById("audioInput").style.display="none";
+
+if(type=="text")
+document.getElementById("textInput").style.display="block";
+
+if(type=="image")
+document.getElementById("imageInput").style.display="block";
+
+if(type=="audio")
+document.getElementById("audioInput").style.display="block";
+}
+
+
+async function detect(){
+
+let type = document.getElementById("type").value;
+
+let formData = new FormData();
+formData.append("type",type);
+
+if(type=="text")
+formData.append("text",document.getElementById("textInput").value);
+
+if(type=="image")
+formData.append("file",document.getElementById("imageInput").files[0]);
+
+if(type=="audio")
+formData.append("file",document.getElementById("audioInput").files[0]);
+
+let response = await fetch("/predict",{
+method:"POST",
+body:formData
+});
+
+let data = await response.json();
+
+document.getElementById("result").innerText =
+data.prediction + " | Confidence: " + data.confidence + "%";
+
+document.getElementById("progress").style.width =
+data.confidence + "%";
+
+}
+
+</script>
+
+</body>
+</html>

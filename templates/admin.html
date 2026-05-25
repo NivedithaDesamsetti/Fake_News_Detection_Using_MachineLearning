@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Panel</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+
+<h2>📊 Admin Panel</h2>
+
+<table border="1" width="100%">
+<tr>
+<th>ID</th>
+<th>Type</th>
+<th>Result</th>
+<th>Confidence</th>
+<th>Time</th>
+</tr>
+
+{% for row in data %}
+<tr>
+<td>{{ row.id }}</td>
+<td>{{ row.input_type }}</td>
+<td>{{ row.result }}</td>
+<td>{{ row.confidence }}</td>
+<td>{{ row.timestamp }}</td>
+</tr>
+{% endfor %}
+
+</table>
+
+<br>
+
+<a href="/dashboard">📈 View Charts</a>
+<br>
+<a href="/">🏠 Home</a>
+
+</div>
+
+</body>
+</html>
